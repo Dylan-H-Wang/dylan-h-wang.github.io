@@ -1,0 +1,330 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on DW&#39;s Blog</title>
+        <link>https://dylan-h-wang.github.io/posts/</link>
+        <description>Recent content in Posts on DW&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <copyright>CC BY-NC 4.0 License.</copyright>
+        <lastBuildDate>Fri, 06 Aug 2021 00:00:00 +0000</lastBuildDate>
+        <atom:link href="https://dylan-h-wang.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Transformer in Computer Vision</title>
+            <link>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</link>
+            <pubDate>Fri, 06 Aug 2021 00:00:00 +0000</pubDate>
+            
+            <guid>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</guid>
+            <description>Table of Contents  Introduction Problems to Solve Applications  Image generation DETR ViT Swin Transformer MoCo v3 Others   Resources Citation Reference    Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
+Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?</description>
+            <content type="html"><![CDATA[
+
+<hr />
+<aside id="toc">
+<div class="toc-title">Table of Contents</div>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#problems-to-solve">Problems to Solve</a></li>
+    <li><a href="#applications">Applications</a>
+      <ul>
+        <li><a href="#image-generation">Image generation</a></li>
+        <li><a href="#detr">DETR</a></li>
+        <li><a href="#vit">ViT</a></li>
+        <li><a href="#swin-transformer">Swin Transformer</a></li>
+        <li><a href="#moco-v3">MoCo v3</a></li>
+        <li><a href="#others">Others</a></li>
+      </ul>
+    </li>
+    <li><a href="#resources">Resources</a></li>
+    <li><a href="#citation">Citation</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+</aside>
+<hr />
+<h2 id="introduction">Introduction</h2>
+<p>Normally, when talking about the Transformer architecture, we usually refer to applications in <em>Natural Language Processing (NLP)</em> tasks. Here, I want show recent research progress on how to apply the Transformer in <em>Computer Vision (CV)</em> tasks.</p>
+<p>Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer? Firstly, Transformer can use memory in the most <strong>efficient</strong> way and become much more powerful when it comes to complex tasks with sufficient data. Another outstanding feature of the Transformer is its <strong>parallelisable</strong> training process thanks to the attention-only architecture.</p>
+<p>While the Transformer architecture has become the de-facto standard for NLP tasks, its applications to computer vision remain limited.  In vision, attention is either applied in conjunction with convolutional networks, or used to replace certain components of convolutional networks while keeping their overall structure in place.</p>
+<p>In following parts, I will discuss some milestone papers to demonstrate the power of Transformer in CV. If you are not familiar with attention mechanism or Transformer architecture, I highly recommend you to read these blogs first: <a href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html">Lil&rsquo;s Log: Attention? Attention!</a>, <a href="https://lilianweng.github.io/lil-log/2020/04/07/the-transformer-family.html">Lil&rsquo;s Log: The Transformer Family</a>, <a href="https://jalammar.github.io/illustrated-transformer/">Jay Alammar: The Illustrated Transformer</a>, <a href="https://github.com/WilliamYi96/Awesome-Zero-Shot-Learning#Datasets">harvardnlp: The Annotated Transformer</a>.</p>
+<h2 id="problems-to-solve">Problems to Solve</h2>
+<ol>
+<li>
+<p>Transformer is designed for sequence inputs which is not applicable for grid-structured image inputs.</p>
+</li>
+<li>
+<p>Two advantages have made CNNs architecture popular and effective in CV:</p>
+<ul>
+<li><strong>Translation invariance:</strong> you can recognise an object in an image, even when its appearance or position varies.</li>
+<li><strong>Locally restricted receptive field:</strong> only neighbour values are used which are constrained by the kernel.</li>
+</ul>
+<p>However, compared with CNNs, Transformer is designed for <strong>permutation invariant</strong> and has much less image-specific inductive bias than CNNs.</p>
+</li>
+</ol>
+<h2 id="applications">Applications</h2>
+<h3 id="image-generation">Image generation</h3>
+<p><em>PixelRNN</em> (<a href="(https://arxiv.org/abs/1601.06759)">Oord, Aäron van den et al., 2016</a>) provides a solution to generate images pixel by pixel and this is intuitive to treat each pixel as a single word which can then be used in the Transformer.</p>
+<h4 id="image-transformer">Image Transformer</h4>
+<p><em>Image Transformer</em> <a href="https://arxiv.org/abs/1802.05751">(Parmar et al., 2018)</a> utilised this intuition and generalised the Transformer to a sequence modelling formulation of image generation with a tractable likelihood. It has several advantages including:</p>
+<ul>
+<li>Increase the size of images the model can process in practice.</li>
+<li>Maintaining significantly larger receptive fields per layer than typical convolutional neural networks which is important to achieve the SOTA results.</li>
+<li>Can achieve a better balance in the trade-off between the virtually unlimited receptive field of the necessarily sequential PixelRNN and the limited receptive field of the much more parallelisable PixelCNN and its various extensions.</li>
+</ul>
+<p>Methods:</p>
+<ul>
+<li>
+<p>Position embeddings: use $d$-dimensional encoding vectors for <em>sine</em> or <em>cosine</em> function of pixel coordinates with different frequencies across different dimensions.</p>
+</li>
+<li>
+<p>Inputs for Transformer:  only local neighbourhoods for each query pixel instead of global as shown in <a href="https://arxiv.org/abs/1802.05751">Fig.1</a>.</p>
+<ul>
+<li>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_10_03.png" alt="">
+    <figcaption>Fig.1 - The two different conditional factorizations used in our experiments, with 1D and 2D local attention on the left and right, respectively.</figcaption>
+  </figure>
+</li>
+</ul>
+</li>
+<li>
+<p>Model architecture as shown in <a href="https://arxiv.org/abs/1802.05751">Fig.2</a>:</p>
+<ul>
+<li>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_10_08.png" alt="">
+    <figcaption>Fig.2 - A slice of one layer of the Image Transformer, recomputing the representation q′ of a single channel of one pixel q by attending to a memory of previously generated pixels.</figcaption>
+  </figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="image-gpt">Image GPT</h4>
+<p><em>Image GPT (iGPT)</em> <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">(Chen, Mark et al., 2020)</a> in <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">Fig.3</a> uses the same architecture as GPT-2 (i.e., Transformer only) and trained in an unsupervised manner by predicting masked pixels. To reduce the length of input sequences, iGPT resizes the image into smaller dimensions and uses K-means to cluster RGB pixel values. Learnt image representations perform well in various downstream tasks.</p>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_10_46.png" alt="">
+    <figcaption>Fig.3 - Overview of iGPT.</figcaption>
+  </figure>
+</p>
+<h3 id="detr">DETR</h3>
+<p><em>Detection Transformer (DETR)</em> (<a href="https://arxiv.org/abs/2005.12872">Carion, Nicolas et al., 2020</a>) adopted Transformer architecture to object detection and panoptic segmentation which completely altered the object detection system pipeline with Transformer as shown in <a href="https://arxiv.org/abs/2005.12872">Fig.4</a> and <a href="https://arxiv.org/abs/2005.12872">Fig.5</a>.</p>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_20_11.png" alt="">
+    <figcaption>Fig.4 - Overview of DETR model.</figcaption>
+  </figure>
+
+
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_20_13.png" alt="">
+    <figcaption>Fig.5 - Comparision of workflow between Faster R-CNN and DETR.</figcaption>
+  </figure>
+</p>
+<p>DETR casts the object detection task as an image-to-set problem. Given an input image, the model is asked to predict all present objects with corresponding classes and bounding boxes. The training process is based on a set-based global loss which forces unique predictions via bipartite matching.</p>
+<p>Given a fixed small set of learned object queries, DETR reasons about the relations of the objects and the global image context to directly output the final set of predictions in parallel. Transformers’ self-attention mechanisms allow DETR to perform global reasoning on the image as well as on the specific objects that are predicted.</p>
+<p>The architecture is shown in <a href="https://arxiv.org/abs/2005.12872">Fig.6</a> and the workflow of DETR follows:</p>
+<ol>
+<li>
+<p>Extract image features via CNN backbone model.</p>
+</li>
+<li>
+<p>Down-sample image features and flatten the feature maps.</p>
+</li>
+<li>
+<p>Add positional embeddings to the feature maps before feeding into the Transformer.</p>
+</li>
+<li>
+<p>Randomly initialise object queries which contain $N$ learnable embeddings. The values of object queries will reflect the actual object positions as the training converges.</p>
+</li>
+<li>
+<p>Feed images features with positional embeddings and object queries into the Transformer (the same architecture as the original Transformer paper).</p>
+</li>
+<li>
+<p>Two Feed-forward networks (FFN) take outputs of the Transformer and predict the founding boxes and classes respectively. Instead of doing it in the auto-regressive manner, DETR produces predictions at once.
+
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_20_47.png" alt="">
+    <figcaption>Fig.6 - Architecture of DETR&#39;s Transformer.</figcaption>
+  </figure>
+</p>
+</li>
+</ol>
+<p>Key findings:</p>
+<ul>
+<li>The auxiliary loss in decoder during training can help the model correct number of objects of each class.</li>
+<li>Increasing the number of encoder layer can enhance the model ability of global scene reasoning.</li>
+<li>The decoder with more than 2 layers enables the model to inhibit duplicate predictions  and helps to get rid of the NMS procedure. The attention of decoder is fairly local which mostly attends to object extremities such as heads or legs.</li>
+<li>The FFN inside Transformer can be seen as 1 × 1 convolutional layers, making encoder similar to attention augmented convolutional networks.</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>The performance on large object detection is significantly improved, while the performance on small object detection is degraded. The underlying reason is the non-local computations of the Transformer.</li>
+<li>This new design for detectors also comes with new challenges, in particular regarding training, optimisation and performances on small objects.</li>
+<li>By design, DETR cannot predict more objects than it has query slots. The result starts saturating and misses more and more instances when the number of present objects reaches the limit.</li>
+</ul>
+<h3 id="vit">ViT</h3>
+<p>The aim of <em>Vision Transformer (ViT)</em> <a href="https://arxiv.org/abs/2010.11929">(Dosovitskiy, A. et al., 2021)</a> is to replicate the success of Transformer in NLP to CV by only applying the standard Transformer directly to images with the fewest modifications without involving any CNNs.</p>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_13_32.gif" alt="">
+    <figcaption>Fig.7 - Overview of ViT model.</figcaption>
+  </figure>
+</p>
+<p>As shown in the <a href="https://arxiv.org/abs/2010.11929">Fig.7</a>, the working process follows:</p>
+<ol>
+<li>Split an image $x \in \R^{H \times W \times C}$ into patches and flatten them to form a sequence $x_p \in \R^{N \times (P^2 \cdot C)}$ where $P$ is the resolution of patches and $N$ is the number of patches.</li>
+<li>Linearly project patches into embeddings with a fixed dimension $D$ and prepend a $[class]$ token to hold image representations. Thus, we have learnable embeddings $E \in \R^{(N+1) \times D}$.</li>
+<li>Add standard learnable 1D positional embeddings $E_{pos} \in \R^{(N+1) \times D}$.</li>
+<li>Feed the processed sequence as an input into the Transformer encoder.</li>
+<li>Pre-train the model with labels.</li>
+<li>Fine-tune the model with different downstream tasks/datasets.</li>
+</ol>
+<p>Several key findings are identified by the paper:</p>
+<ul>
+<li>
+<p>Only the encoder part of the Transformer is used which is the same as BERT (<a href="https://arxiv.org/abs/1810.04805">Devlin, J. et al., 2019</a>)</p>
+</li>
+<li>
+<p>Different positional embedding schemes are experimented and showed similar results. This is probably due to the fact that the Transformer encoder operates on a patch-level. Learning embeddings that capture the order  relationships between patches (spatial information) is less important.  It is relatively easier to understand the relationships between patches  of $P \times P $ than of a full image $H \times W$.</p>
+</li>
+<li>
+<p>By <a href="https://arxiv.org/abs/2010.11929">Fig.8</a>, we can see the attention distance increases with network depth similar to the receptive field of local operations. However, there are heads (upper left part) that attend to the whole patch already in the early layers. This may be the core reason for superior performance.</p>
+<ul>
+<li>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_14_40.png" alt="">
+    <figcaption>Fig.8 - Size of attended area by head and network depth in ViT model.</figcaption>
+  </figure>
+</li>
+</ul>
+</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>ViT needs to be trained on a large enough dataset (more than 14M) to achieve the results of SOTA CNNs. It would be better to stick with CNNs if you do not have enough data. The possible reason can be that the convolutional inductive bias (translation invariance and locality) is useful for smaller datasets, but for larger ones, learning the relevant patterns directly from data is sufficient, even beneficial.</li>
+<li>ViT requires less parameters and computation than CNNs. When the model is large, Transformer can achieve similar/better performance than CNNs, whereas hybrids (CNNs + Transformer) architecture performs better when the model size is small.</li>
+<li>Further analysis of few-shot properties of ViT is an exciting direction of future work.</li>
+</ul>
+<p>Later, the same authors (<a href="https://arxiv.org/abs/2106.04560">Zhai, Xiaohua et al.</a>) investigated the scaling law of proposed ViT and summarised that:</p>
+<ul>
+<li>Scaling up compute, model and data together improves representation quality.</li>
+<li>Representation quality can be bottlenecked by model size.</li>
+<li>Large models benefit from additional data, even beyond 1B images.</li>
+<li>Bigger models are more sample efficient.</li>
+</ul>
+<h3 id="swin-transformer">Swin Transformer</h3>
+<p><em>Swin Transformer</em> (<a href="https://arxiv.org/abs/2103.14030">Liu, Ze et al.</a>) demonstrates a hierarchical Transformer by using shifted windows to compute image representations. The shifted windowing scheme is efficient by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. The proposed Swin Transformer has linear computational complexity to image size. The comparison of Swin Transformer and CNNs is shown in <a href="https://arxiv.org/abs/2103.14030">Fig.9</a>.</p>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/21_21_08.png" alt="">
+    <figcaption>Fig.9 - Overview of Swin Transformer with hierachical structure similar with CNNs.</figcaption>
+  </figure>
+</p>
+<p>Workflow as shown in <a href="https://arxiv.org/abs/2103.14030">Fig.10</a>:</p>
+<ol>
+<li>Split the image into non-overlapping patches.</li>
+<li>Project patches into an arbitrary dimension by linear embedding.</li>
+<li>Feed into the <em>Swin Transformer Block</em>.</li>
+<li>Merge patches so that the number of patches will decrease and the receptive field of each patch will increase .</li>
+<li>Repeat from step 3 depend on the number of .</li>
+</ol>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/21_21_36.png" alt="">
+    <figcaption>Fig.10 - The architecture of Swin Transformer.</figcaption>
+  </figure>
+</p>
+<p>Features:</p>
+<ul>
+<li>
+<p><strong>Patch partition &amp; patch merging</strong>: this module works like pooling layers in CNNs by using sliding window operation (<code>nn.Unfold</code> in <code>PyTorch</code>). This special &ldquo;pooling&rdquo; strategy will not cause any information loss regardless of the increase of computations.</p>
+</li>
+<li>
+<p><strong>Swin Transformer block - window multi-head self-attention (W-MSA)</strong>: the W-MSA partitions the feature map into several windows and calculates attentions inside each window. This reduce the computation complexity into <strong>linear w.r.t image size</strong>.</p>
+</li>
+<li>
+<p><strong>Swin Transformer block - shifted-window multi-head self-attention (SW-MSA)</strong>: However, the connection among windows have not built yet, and SW-MSA is proposed to solve this problem. As illustrated in <a href="https://arxiv.org/abs/2103.14030">Fig.11</a>, the <em>Layer l</em> uses a regular window partitioning strategy which starts from the top-left pixel, and the $8 × 8$ feature map is evenly partitioned into $2 × 2$ windows of size $4 × 4 (M = 4)$. Then, the <em>Layer l+1</em> adopts a windowing conﬁguration that is shifted from the preceding layer, by displacing the windows by $( ⌊ 2 M ⌋ , ⌊ 2 M ⌋ )$ pixels from the regularly partitioned windows.</p>
+<p>
+  <figure>
+    <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/21_21_14.png" alt="">
+    <figcaption>Fig.11 - An illustration of the shifted window approach for computing self-attention in the proposed Swin Transformer architecture.</figcaption>
+  </figure>
+</p>
+</li>
+<li>
+<p>All query patches within a window share the same key set, which facilitates memory access in hardware.</p>
+</li>
+<li>
+<p>With these hierarchical feature maps, the Swin Transformer model can conveniently leverage advanced techniques for dense prediction such as feature pyramid networks (FPN) or U-Net.</p>
+</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>The parameters among windows are not shared which results in more computations and lower speed than CNNs.</li>
+</ul>
+<p>This structure is then extended by the same author into video learning as <em>Video Swin Transformer</em> <a href="https://arxiv.org/abs/2106.13230">(Liu, Ze et al.)</a>.</p>
+<h3 id="moco-v3">MoCo v3</h3>
+<p>MoCo v3 <a href="https://arxiv.org/abs/2104.02057">(Chen et at.)</a> builds and experiments the baseline of combination of self-supervised learning (SSL) and ViT.</p>
+<p>Comprehensive experiments are conducted to show:</p>
+<ul>
+<li>Instability is a major issue that degrades accuracy and this is rare in CNN training.</li>
+<li>Bigger ViT can achieve better result in SSL which is opposite in supervised learning (ImageNet).</li>
+<li>It is observed that <em>removing the position embedding</em> only degrades accuracy by a small margin. This indicates that self-supervised ViT can learn the position representations without the positional inductive bias. We can also conclude the positional information has not been sufficiently exploited.</li>
+<li>When the batch size is less than 2k, larger batch size provides more negative samples and thus improve the performance. However, bigger batches can result in instability and harm the performance. The possible reason is the training is <strong>partially restarted</strong> and <strong>jumps</strong> out of the current local optimum, then seeks a new trajectory.</li>
+<li>The effect of learning rate follows conventional CNN training i.e. smaller learning rate is prone to <strong>under-fitting</strong> and larger learning rate is <strong>unstable</strong>.</li>
+<li>As for the choice of optimiser, LAMB can achieve <strong>comparable</strong> accuracy with AdamW. However, the <strong>sensitivity</strong> to learning rate makes it difﬁcult to ablate different architecture designs without extra learning rate search.</li>
+<li>By analysing gradients of each layer, the instability is introduced in the first layer (patch projection) and is delayed by couples of iterations in the last layers. To solve this, a <strong>fixed random patch projection layer</strong> is adopted which is <strong>not</strong> learnt during the training.</li>
+<li>The application of <em>BatchNorm</em> and <em>WeightNorm</em> does not help with the instability issue. The gradient clip is useful when the threshold is set <strong>extreme small</strong>.</li>
+<li>The class toke <em>[CLS]</em> is not essential for the system to work and the choice of normalisation layers is important. For example, if [CLS] is removed and replace the <em>LayerNorm</em> after the final block with global average pooling, the result is <strong>nearly unchanged</strong>.</li>
+</ul>
+<h3 id="others">Others</h3>
+<h4 id="detr-based">DETR-Based</h4>
+<ol>
+<li><a href="https://arxiv.org/abs/2010.04159">Deformable DETR: Deformable Transformers for End-to-End Object Detection (ICLR'21)</a>: it combines the best of the sparse spatial sampling of deformable convolution, and the relation modelling capability of Transformers to improve small object detection performance, convergence time and computation efficiency.</li>
+<li><a href="https://arxiv.org/abs/2011.10881">TSP: Rethinking Transformer-based Set Prediction for Object Detection</a>: it improves DETR w.r.t Hungarian loss and the Transformer cross attention mechanism. This work basically borrows the best practice in modern object detector (FPN, FCOS and Faster-RCNN) and replaces the dense prior heads with DETR encoder, and uses set prediction loss. (<a href="https://patrick-llgc.github.io/Learning-Deep-Learning/paper_notes/tsp.html">ref</a>)</li>
+<li><a href="https://arxiv.org/abs/2011.09094">UP-DETR: Unsupervised Pre-training for Object Detection with Transformers</a>: it proposes a pretext task named random query patch detection to pre-train DETR for object detection in an unsupervised manner.</li>
+<li><a href="https://arxiv.org/abs/2103.11731">Meta-DETR: Few-Shot Object Detection via Unified Image-Level Meta-Learning</a>: it eliminates region-wise prediction and instead meta-learns object localisation and classification at image level in a unified and complementary manner.</li>
+<li><a href="https://arxiv.org/abs/2103.17084">DA-DETR: Domain Adaptive Detection Transformer by Hybrid Attention</a>: it performs inter-domain alignment with a single discriminator by introducing a hybrid attention module that pinpoints the hard-aligned features.</li>
+</ol>
+<h4 id="vit-based">ViT-Based</h4>
+<ol>
+<li><a href="https://arxiv.org/abs/2012.15840">Rethinking Semantic Segmentation from a Sequence-to-Sequence Perspective with Transformers (CVPR'21)</a>: this paper treats semantic segmentation as a sequence-to-sequence prediction task which applies encoder-decoder architecture where a transformer is used to encode an image as a sequence of patches and a CNN is used as the decoder.</li>
+<li><a href="https://arxiv.org/abs/2012.00364">IPT: Pre-Trained Image Processing Transformer (CVPR'21)</a>: this paper develops a transformer-based pre-trained model for low-level image processing (e.g., denoising, super-resolution and deraining). The model is trained with multi-heads and multi-tails.</li>
+<li><a href="https://arxiv.org/abs/2011.14503">VisTR: End-to-End Video Instance Segmentation with Transformers (CVPR'21)</a>:this paper views the video instance segmentation task as a direct end-to-end parallel sequence decoding/prediction problem. Also, the similarity learning is used to solve the problem that instance segmentation is to learn the pixel-level similarity and instance tracking is to learn the similarity between instances.</li>
+<li><a href="https://arxiv.org/abs/2012.12877">DeiT: Training data-efficient image transformers &amp; distillation through attention (ICML'21)</a>: it applies distillation techniques such that teacher(CNN)-student(Transformer) training paradigm is used to reduce the overhead of data and computations.</li>
+<li><a href="https://arxiv.org/abs/2103.17239">CaiT: Going deeper with Image Transformers</a>: this paper analyses discusses about how to improve the residual blocks in the Transformer architecture. Firstly, it adds a learnable diagonal matrix on output of each residual block initialised close to (but not at) 0; Secondly, it separates the transformer layers from class-attention layers so that the contradictory objective of guiding the attention process while processing the class embedding is avoided.</li>
+</ol>
+<h4 id="survey">Survey</h4>
+<ol>
+<li><a href="https://arxiv.org/abs/2012.12556">A Survey on Visual Transformer</a></li>
+<li><a href="https://arxiv.org/abs/2101.01169">Transformers in Vision: A Survey</a></li>
+</ol>
+<h2 id="resources">Resources</h2>
+<p>You can check my shared annotations for transformer-related readings I have read by this <a href="https://hypothes.is/groups/zaL6AYWg/transformer">link</a>. Feel free to share your annotations and ideas if you have read something interesting!</p>
+<h2 id="citation">Citation</h2>
+<p>If you find this blog helpful, please cite it as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-latex" data-lang="latex">@misc{wang2021visiontransformer,
+  author  = {Dylan Wang},
+  title   = {Transformer in Computer Vision},
+  year    = {2021},
+  url     = {https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/}
+}
+</code></pre></div><h2 id="reference">Reference</h2>
+<ol>
+<li>Oord, Aäron van den et al. “<a href="https://arxiv.org/abs/1601.06759">Pixel Recurrent Neural Networks.</a>” ArXiv 2016.</li>
+<li>Parmar, Niki et al. <a href="https://arxiv.org/abs/1802.05751">“Image Transformer.”</a> PMLR 2018.</li>
+<li>Chen, Mark et al. “<a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">Generative Pretraining From Pixels.</a>” ICML 2020.</li>
+<li>Carion, Nicolas et al. “<a href="https://arxiv.org/abs/2005.12872">End-to-End Object Detection with Transformers.</a>” ECCV 2020.</li>
+<li>Dosovitskiy, A. et al. “<a href="https://arxiv.org/abs/2010.11929">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale.</a>” ICLR 2021.</li>
+<li>Devlin, J. et al. “<a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding.</a>” NAACL-HLT 2019.</li>
+<li>Zhai, Xiaohua et al. “<a href="https://arxiv.org/abs/2106.04560">Scaling Vision Transformers.</a>” ArXiv 2021.</li>
+<li>Liu, Ze et al. “<a href="https://arxiv.org/abs/2103.14030">Swin Transformer: Hierarchical Vision Transformer using Shifted Windows.</a>” ArXiv 2021.</li>
+<li>Chen, Xinlei et al. “<a href="https://arxiv.org/abs/2104.02057">An Empirical Study of Training Self-Supervised Vision Transformers.</a>” Arxiv 2021.</li>
+</ol>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

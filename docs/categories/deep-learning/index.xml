@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Deep Learning on DW&#39;s Blog</title>
+    <link>https://dylan-h-wang.github.io/categories/deep-learning/</link>
+    <description>Recent content in Deep Learning on DW&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>CC BY-NC 4.0 License.</copyright>
+    <lastBuildDate>Fri, 06 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://dylan-h-wang.github.io/categories/deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Transformer in Computer Vision</title>
+      <link>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</link>
+      <pubDate>Fri, 06 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</guid>
+      <description>Table of Contents  Introduction Problems to Solve Applications  Image generation DETR ViT Swin Transformer MoCo v3 Others   Resources Citation Reference    Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
+Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?</description>
+    </item>
+    
+  </channel>
+</rss>
