@@ -15,9 +15,10 @@
             <pubDate>Fri, 06 Aug 2021 00:00:00 +0000</pubDate>
             
             <guid>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</guid>
-            <description>Table of Contents  Introduction Problems to Solve Applications  Image generation DETR ViT Swin Transformer MoCo v3 Others   Resources Citation Reference    Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
-Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?</description>
-            <content type="html"><![CDATA[
+            <description>Table of Contents Introduction Problems to Solve Applications Image generation DETR ViT Swin Transformer MoCo v3 Others Resources Citation Reference Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
+Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer? Firstly, Transformer can use memory in the most efficient way and become much more powerful when it comes to complex tasks with sufficient data.</description>
+            <content type="html"><![CDATA[<!-- raw HTML omitted -->
+
 
 <hr />
 <aside id="toc">
@@ -64,7 +65,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 </ol>
 <h2 id="applications">Applications</h2>
 <h3 id="image-generation">Image generation</h3>
-<p><em>PixelRNN</em> (<a href="(https://arxiv.org/abs/1601.06759)">Oord, Aäron van den et al., 2016</a>) provides a solution to generate images pixel by pixel and this is intuitive to treat each pixel as a single word which can then be used in the Transformer.</p>
+<p><em>PixelRNN</em> (<a href="(https://arxiv.org/abs/1601.06759)">Oord et al., 2016</a>) provides a solution to generate images pixel by pixel and this is intuitive to treat each pixel as a single word which can then be used in the Transformer.</p>
 <h4 id="image-transformer">Image Transformer</h4>
 <p><em>Image Transformer</em> <a href="https://arxiv.org/abs/1802.05751">(Parmar et al., 2018)</a> utilised this intuition and generalised the Transformer to a sequence modelling formulation of image generation with a tractable likelihood. It has several advantages including:</p>
 <ul>
@@ -101,7 +102,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 </li>
 </ul>
 <h4 id="image-gpt">Image GPT</h4>
-<p><em>Image GPT (iGPT)</em> <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">(Chen, Mark et al., 2020)</a> in <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">Fig.3</a> uses the same architecture as GPT-2 (i.e., Transformer only) and trained in an unsupervised manner by predicting masked pixels. To reduce the length of input sequences, iGPT resizes the image into smaller dimensions and uses K-means to cluster RGB pixel values. Learnt image representations perform well in various downstream tasks.</p>
+<p><em>Image GPT (iGPT)</em> <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">(Chen et al., 2020)</a> in <a href="https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V1_ICML.pdf">Fig.3</a> uses the same architecture as GPT-2 (i.e., Transformer only) and trained in an unsupervised manner by predicting masked pixels. To reduce the length of input sequences, iGPT resizes the image into smaller dimensions and uses K-means to cluster RGB pixel values. Learnt image representations perform well in various downstream tasks.</p>
 <p>
   <figure>
     <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_10_46.png" alt="">
@@ -109,7 +110,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
   </figure>
 </p>
 <h3 id="detr">DETR</h3>
-<p><em>Detection Transformer (DETR)</em> (<a href="https://arxiv.org/abs/2005.12872">Carion, Nicolas et al., 2020</a>) adopted Transformer architecture to object detection and panoptic segmentation which completely altered the object detection system pipeline with Transformer as shown in <a href="https://arxiv.org/abs/2005.12872">Fig.4</a> and <a href="https://arxiv.org/abs/2005.12872">Fig.5</a>.</p>
+<p><em>Detection Transformer (DETR)</em> (<a href="https://arxiv.org/abs/2005.12872">Carion et al., 2020</a>) adopted Transformer architecture to object detection and panoptic segmentation which completely altered the object detection system pipeline with Transformer as shown in <a href="https://arxiv.org/abs/2005.12872">Fig.4</a> and <a href="https://arxiv.org/abs/2005.12872">Fig.5</a>.</p>
 <p>
   <figure>
     <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_20_11.png" alt="">
@@ -142,7 +143,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <p>Feed images features with positional embeddings and object queries into the Transformer (the same architecture as the original Transformer paper).</p>
 </li>
 <li>
-<p>Two Feed-forward networks (FFN) take outputs of the Transformer and predict the founding boxes and classes respectively. Instead of doing it in the auto-regressive manner, DETR produces predictions at once.
+<p>Two Feed-forward networks (FFN) take outputs of the Transformer and predict the bounding boxes and classes respectively. Instead of doing it in the auto-regressive manner, DETR produces predictions at once.
 
   <figure>
     <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_20_47.png" alt="">
@@ -165,7 +166,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <li>By design, DETR cannot predict more objects than it has query slots. The result starts saturating and misses more and more instances when the number of present objects reaches the limit.</li>
 </ul>
 <h3 id="vit">ViT</h3>
-<p>The aim of <em>Vision Transformer (ViT)</em> <a href="https://arxiv.org/abs/2010.11929">(Dosovitskiy, A. et al., 2021)</a> is to replicate the success of Transformer in NLP to CV by only applying the standard Transformer directly to images with the fewest modifications without involving any CNNs.</p>
+<p>The aim of <em>Vision Transformer (ViT)</em> <a href="https://arxiv.org/abs/2010.11929">(Dosovitskiy et al., 2021)</a> is to replicate the success of Transformer in NLP to CV by only applying the standard Transformer directly to images with the fewest modifications without involving any CNNs.</p>
 <p>
   <figure>
     <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/08_13_32.gif" alt="">
@@ -174,9 +175,9 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 </p>
 <p>As shown in the <a href="https://arxiv.org/abs/2010.11929">Fig.7</a>, the working process follows:</p>
 <ol>
-<li>Split an image $x \in \R^{H \times W \times C}$ into patches and flatten them to form a sequence $x_p \in \R^{N \times (P^2 \cdot C)}$ where $P$ is the resolution of patches and $N$ is the number of patches.</li>
-<li>Linearly project patches into embeddings with a fixed dimension $D$ and prepend a $[class]$ token to hold image representations. Thus, we have learnable embeddings $E \in \R^{(N+1) \times D}$.</li>
-<li>Add standard learnable 1D positional embeddings $E_{pos} \in \R^{(N+1) \times D}$.</li>
+<li>Split an image $x \in \mathcal{R}^{H \times W \times C}$ into patches and flatten them to form a sequence $x_p \in \mathcal{R}^{N \times (P^2 \cdot C)}$ where $P$ is the resolution of patches and $N$ is the number of patches.</li>
+<li>Linearly project patches into embeddings with a fixed dimension $D$ and prepend a $[class]$ token to hold image representations. Thus, we have learnable embeddings $E \in \mathcal{R}^{(N+1) \times D}$.</li>
+<li>Add standard learnable 1D positional embeddings $E_{pos} \in \mathcal{R}^{(N+1) \times D}$.</li>
 <li>Feed the processed sequence as an input into the Transformer encoder.</li>
 <li>Pre-train the model with labels.</li>
 <li>Fine-tune the model with different downstream tasks/datasets.</li>
@@ -184,7 +185,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <p>Several key findings are identified by the paper:</p>
 <ul>
 <li>
-<p>Only the encoder part of the Transformer is used which is the same as BERT (<a href="https://arxiv.org/abs/1810.04805">Devlin, J. et al., 2019</a>)</p>
+<p>Only the encoder part of the Transformer is used which is the same as BERT (<a href="https://arxiv.org/abs/1810.04805">Devlin et al., 2019</a>)</p>
 </li>
 <li>
 <p>Different positional embedding schemes are experimented and showed similar results. This is probably due to the fact that the Transformer encoder operates on a patch-level. Learning embeddings that capture the order  relationships between patches (spatial information) is less important.  It is relatively easier to understand the relationships between patches  of $P \times P $ than of a full image $H \times W$.</p>
@@ -207,7 +208,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <li>ViT requires less parameters and computation than CNNs. When the model is large, Transformer can achieve similar/better performance than CNNs, whereas hybrids (CNNs + Transformer) architecture performs better when the model size is small.</li>
 <li>Further analysis of few-shot properties of ViT is an exciting direction of future work.</li>
 </ul>
-<p>Later, the same authors (<a href="https://arxiv.org/abs/2106.04560">Zhai, Xiaohua et al.</a>) investigated the scaling law of proposed ViT and summarised that:</p>
+<p>Later, the same authors (<a href="https://arxiv.org/abs/2106.04560">Zhai et al., 2021</a>) investigated the scaling law of proposed ViT and summarised that:</p>
 <ul>
 <li>Scaling up compute, model and data together improves representation quality.</li>
 <li>Representation quality can be bottlenecked by model size.</li>
@@ -215,7 +216,7 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <li>Bigger models are more sample efficient.</li>
 </ul>
 <h3 id="swin-transformer">Swin Transformer</h3>
-<p><em>Swin Transformer</em> (<a href="https://arxiv.org/abs/2103.14030">Liu, Ze et al.</a>) demonstrates a hierarchical Transformer by using shifted windows to compute image representations. The shifted windowing scheme is efficient by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. The proposed Swin Transformer has linear computational complexity to image size. The comparison of Swin Transformer and CNNs is shown in <a href="https://arxiv.org/abs/2103.14030">Fig.9</a>.</p>
+<p><em>Swin Transformer</em> (<a href="https://arxiv.org/abs/2103.14030">Liu et al., 2021</a>) demonstrates a hierarchical Transformer by using shifted windows to compute image representations. The shifted windowing scheme is efficient by limiting self-attention computation to non-overlapping local windows while also allowing for cross-window connection. The proposed Swin Transformer has linear computational complexity to image size. The comparison of Swin Transformer and CNNs is shown in <a href="https://arxiv.org/abs/2103.14030">Fig.9</a>.</p>
 <p>
   <figure>
     <img src="https://raw.githubusercontent.com/Dylan-H-Wang/Storage/main/Image/2021/07/21_21_08.png" alt="">
@@ -264,9 +265,9 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <ul>
 <li>The parameters among windows are not shared which results in more computations and lower speed than CNNs.</li>
 </ul>
-<p>This structure is then extended by the same author into video learning as <em>Video Swin Transformer</em> <a href="https://arxiv.org/abs/2106.13230">(Liu, Ze et al.)</a>.</p>
+<p>This structure is then extended by the same author into video learning as <em>Video Swin Transformer</em> <a href="https://arxiv.org/abs/2106.13230">(Liu et al., 2021)</a>.</p>
 <h3 id="moco-v3">MoCo v3</h3>
-<p>MoCo v3 <a href="https://arxiv.org/abs/2104.02057">(Chen et at.)</a> builds and experiments the baseline of combination of self-supervised learning (SSL) and ViT.</p>
+<p>MoCo v3 <a href="https://arxiv.org/abs/2104.02057">(Chen et at., 2021)</a> builds and experiments the baseline of combination of self-supervised learning (SSL) and ViT.</p>
 <p>Comprehensive experiments are conducted to show:</p>
 <ul>
 <li>Instability is a major issue that degrades accuracy and this is rare in CNN training.</li>
@@ -305,13 +306,13 @@ Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?
 <p>You can check my shared annotations for transformer-related readings I have read by this <a href="https://hypothes.is/groups/zaL6AYWg/transformer">link</a>. Feel free to share your annotations and ideas if you have read something interesting!</p>
 <h2 id="citation">Citation</h2>
 <p>If you find this blog helpful, please cite it as:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-latex" data-lang="latex">@misc{wang2021visiontransformer,
-  author  = {Dylan Wang},
-  title   = {Transformer in Computer Vision},
-  year    = {2021},
-  url     = {https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/}
-}
-</code></pre></div><h2 id="reference">Reference</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>@misc{wang2021visiontransformer,
+</span></span><span style="display:flex;"><span>  author  = {Dylan Wang},
+</span></span><span style="display:flex;"><span>  title   = {Transformer in Computer Vision},
+</span></span><span style="display:flex;"><span>  year    = {2021},
+</span></span><span style="display:flex;"><span>  url     = {https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="reference">Reference</h2>
 <ol>
 <li>Oord, Aäron van den et al. “<a href="https://arxiv.org/abs/1601.06759">Pixel Recurrent Neural Networks.</a>” ArXiv 2016.</li>
 <li>Parmar, Niki et al. <a href="https://arxiv.org/abs/1802.05751">“Image Transformer.”</a> PMLR 2018.</li>
