@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "/Users/deangelowang/Desktop/Blog",
+	"sourceRoot": "/Users/dylanhw/Library/Mobile Documents/com~apple~CloudDocs/Blog",
 	"sources": [
 		"themes/hello-friend-ng/assets/scss/main.scss",
 		"themes/hello-friend-ng/assets/scss/_normalize.scss",

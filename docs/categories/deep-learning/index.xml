@@ -14,8 +14,8 @@
       <pubDate>Fri, 06 Aug 2021 00:00:00 +0000</pubDate>
       
       <guid>https://dylan-h-wang.github.io/posts/2021/08/transformer-in-computer-vision/</guid>
-      <description>Table of Contents  Introduction Problems to Solve Applications  Image generation DETR ViT Swin Transformer MoCo v3 Others   Resources Citation Reference    Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
-Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer?</description>
+      <description>Table of Contents Introduction Problems to Solve Applications Image generation DETR ViT Swin Transformer MoCo v3 Others Resources Citation Reference Introduction Normally, when talking about the Transformer architecture, we usually refer to applications in Natural Language Processing (NLP) tasks. Here, I want show recent research progress on how to apply the Transformer in Computer Vision (CV) tasks.
+Why do we want to replace Convolutional Neural Networks (CNNs) with Transformer? Firstly, Transformer can use memory in the most efficient way and become much more powerful when it comes to complex tasks with sufficient data.</description>
     </item>
     
   </channel>
