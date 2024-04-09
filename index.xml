@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DW&#39;s Blog</title>
+    <link>https://dylan-h-wang.github.io/</link>
+    <description>Recent content on DW&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>CC BY-NC 4.0 License.</copyright>
+    <atom:link href="https://dylan-h-wang.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://dylan-h-wang.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://dylan-h-wang.github.io/about/</guid>
+      <description>Site Stuff Hi guys this is Hao Wang (Dylan), welcome to my blog! Here, I will share some ideas about my current studies (mainly about deep learning), and I really hope there is something to help you solve the technical issues you have met which are racking your brains. Feel free to contact me by email: hwan7885@uni.sydney.edu.au if you have any questions or any bug report. Thank you! &amp;#x1f47e;&#xA;About me Currently, I am a PhD candidate at The University of Sydney supervised by Prof.</description>
+    </item>
+    <item>
+      <title>Posts</title>
+      <link>https://dylan-h-wang.github.io/posts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://dylan-h-wang.github.io/posts/</guid>
+      <description>Ta Da!!!</description>
+    </item>
+  </channel>
+</rss>
