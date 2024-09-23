@@ -4,7 +4,7 @@
     <title>DW&#39;s Blog</title>
     <link>https://dylan-h-wang.github.io/</link>
     <description>Recent content on DW&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>CC BY-NC 4.0 License.</copyright>
     <atom:link href="https://dylan-h-wang.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -13,14 +13,14 @@
       <link>https://dylan-h-wang.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://dylan-h-wang.github.io/about/</guid>
-      <description>Site Stuff Hi guys this is Hao Wang (Dylan), welcome to my blog! Here, I will share some ideas about my current studies (mainly about deep learning), and I really hope there is something to help you solve the technical issues you have met which are racking your brains. Feel free to contact me by email: hwan7885@uni.sydney.edu.au if you have any questions or any bug report. Thank you! &amp;#x1f47e;&#xA;About me Currently, I am a PhD candidate at The University of Sydney supervised by Prof.</description>
+      <description>&lt;h2 id=&#34;site-stuff&#34;&gt;Site Stuff&lt;/h2&gt;&#xA;&lt;p&gt;Hi guys this is Hao Wang (Dylan), welcome to my blog! Here, I will share some ideas about my current studies (mainly about deep learning), and I really hope there is something to help you solve the technical issues you have met which are racking your brains. Feel free to contact me by email: &lt;!-- raw HTML omitted --&gt;&lt;a href=&#34;mailto:hwan7885@uni.sydney.edu.au&#34;&gt;hwan7885@uni.sydney.edu.au&lt;/a&gt;&lt;!-- raw HTML omitted --&gt; if you have any questions or any bug report. Thank you! :space_invader:&lt;/p&gt;</description>
     </item>
     <item>
       <title>Posts</title>
       <link>https://dylan-h-wang.github.io/posts/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://dylan-h-wang.github.io/posts/</guid>
-      <description>Ta Da!!!</description>
+      <description>&lt;p&gt;Ta Da!!!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
